@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progressão de Valores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            height: 100vh;
+            background-color: #f8e0ff; /* Rosa bem clarinho */
+            padding: 20px;
+        }
+
+        .input-group {
+            margin: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        label {
+            margin-right: 10px;
+            color: #d63384; /* Rosa mais forte para o texto */
+        }
+
+        input[type="number"] {
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #d63384; /* Borda rosa */
+            border-radius: 5px; /* Bordas arredondadas */
+        }
+
+        button {
+            background-color: #ff69b4; /* Rosa pink */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #progress-container {
+            background-color: #fff0f5; /* Branco rosado */
+            width: 10cm;
+            height: 2cm;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 2px solid #d63384; /* Borda rosa */
+        }
+
+        #progress-bar {
+            background-color: #ffc0cb; /* Rosa bebê */
+            height: 100%;
+            width: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d63384; /* Rosa mais forte para o texto */
+            font-weight: bold;
+            transition: width 1s linear;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="input-group">
+        <label for="valor1">Valor 1:</label>
+        <input type="number" id="valor1" placeholder="Digite o valor 1">
+    </div>
+    <div class="input-group">
+        <label for="valor2">Valor 2:</label>
+        <input type="number" id="valor2" placeholder="Digite o valor 2">
+    </div>
+    <button onclick="iniciarProgresso()">Iniciar Progressão</button>
+    <div id="progress-container">
+        <div id="progress-bar">0%</div>
+    </div>
+
+    <script>
+        let interval;
+        function iniciarProgresso() {
+            clearInterval(interval);
+
+            const valor1 = parseFloat(document.getElementById('valor1').value);
+            const valor2 = parseFloat(document.getElementById('valor2').value);
+
+            if (isNaN(valor1) || isNaN(valor2) || valor2 <= valor1) {
+                alert('Por favor, insira valores válidos onde Valor 2 seja maior que Valor 1.');
+                return;
+            }
+
+            const progressBar = document.getElementById('progress-bar');
+            const total = valor2 - valor1;
+            let atual = valor1; // Começa no valor1
+
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+
+            interval = setInterval(() => {
+                atual++; // Incrementa 1 por vez
+                if (atual > valor2) {
+                    atual = valor2;
+                    clearInterval(interval);
+                }
+
+                const percent = ((atual - valor1) / total) * 100; // Calcula a porcentagem correta
+                progressBar.style.width = percent + '%';
+                progressBar.textContent = percent.toFixed(2) + '%';
+            }, 30); // Ajuste a velocidade da animação (menor = mais rápido)
+        }
+    </script>
+</body>
+
+</html>
